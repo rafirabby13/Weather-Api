@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter a location for Weather ..." id="cityName">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-danger" id="searchButton">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" id="iconImage">
+            <h1 id="cityNameChanged">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="weatherStatus">Clouds</h1>
+        </div>
+    </div>
+
+
+
+    <script>
+        
+        
+        document.getElementById("searchButton").addEventListener("click", function(){
+            // const cityName= document.getElementById("cityName").value;
+            // const cityNameChanged=document.getElementById("cityNameChanged");
+            // cityNameChanged.innerText=cityName;
+
+            function NameOfCity() {
+
+                let cityNames= document.getElementById("cityName").value;
+                return `https://api.openweathermap.org/data/2.5/weather?q=${cityNames}&appid=483d1cdb2145b7f0b83d138b56951041`;
+            }
+
+
+
+fetch(NameOfCity())
+	.then(response => response.json())
+	.then(data => {
+        const cityName= document.getElementById("cityName").value;
+            const cityNameChanged=document.getElementById("cityNameChanged");
+            cityNameChanged.innerText=data.name;
+
+        const temperature=data.main;
+        temperature.temp=(temperature.temp-273.15).toFixed(2);
+        console.log(temperature.temp);
+        const temp=document.getElementById("temp");
+        temp.innerText=temperature.temp;
+        //let naming=data.name;
+        //naming.innerText=cityName;
+        //console.log(naming);
+
+        const weatherCondition= data.weather;
+        let prop="0";
+        const weatherConditionChanged=weatherCondition[prop];
+        console.log(data);
+
+        let iconImage=document.getElementById("iconImage");
+
+
+        let iconChanged=weatherConditionChanged.icon;
+
+        let iconUrl=`https://openweathermap.org/img/wn/${iconChanged}@2x.png`;
+        iconImage.setAttribute("src", iconUrl);
+
+
+        let weatherStatus=document.getElementById("weatherStatus");
+        //console.log(weatherStatus);
+        weatherStatus.innerText=weatherConditionChanged.main;
+
+        
+
+
+        //console.log(weatherStatus);
+    });
+
+});
+
+
+
+
+       
+    </script>
+
+</body>
+
+</html>
